@@ -31,6 +31,10 @@ configure las `.env` y configure a su modo.
 
 ### Endpoints
 prefix `/api/v1`
+#### Auth
+* **POST** `/sign`
+
+El login se realiza,con `email` y `password`
 
 #### Users
 * **POST** `/posts`
@@ -47,3 +51,12 @@ prefix `/api/v1`
 * **DELETE** `/post/:id`
 
 **Nota:** cada endpoint a excepción de el post de `users`, tiene protección de autenticación con `jwt`. 
+
+## Utilidades
+
+para realizar busquedas de documentos borrados, al intentar borrar un documendo este se deshabilita colocando la llave `deleted` en `true`, de forma que no son perseptibles a las busquedas normales.
+
+para eso puede usar los query params: 
+* `whithDeleted` permite incluir documentos borrados o deshabilitados.
+* `onlyDeleted` permite filtrar solo los documentos borrados o deshabilitados. 
+* `hardDelete` si desea eliminar permanentemente el registo.
