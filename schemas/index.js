@@ -1,3 +1,3 @@
-const {generateUserSchema} = require ('./user.js')
+import {generateUserSchema} from './user.js'
 
-module.exports = {generateUserSchema}
+export  {generateUserSchema}
