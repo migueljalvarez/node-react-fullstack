@@ -5,12 +5,13 @@ import {
   insert as postInsert,
   deleteOne as postDelete,
   patch as postPatch,
-  restore as postRestore
+  restore as postRestore,
 } from '../service/post'
 
 const createDocument = asyncWrap(async (req, res) => {
+  const imgUrl = req.file.location
   const createdBy = req.accessToken.username
-  const post = await postInsert(req.body, createdBy)
+  const post = await postInsert(req.body, createdBy, imgUrl)
   res.json(post)
 })
 
@@ -42,9 +43,13 @@ const patchDocument = asyncWrap(async (req, res) => {
 
 const deleteDocument = asyncWrap(async (req, res) => {
   const createdBy = req.accessToken.username
-  const post = await postDelete(req.params.id, {
-    hardDelete: req.query.hardDelete === 'true' ? true : false,
-  },createdBy )
+  const post = await postDelete(
+    req.params.id,
+    {
+      hardDelete: req.query.hardDelete === 'true' ? true : false,
+    },
+    createdBy,
+  )
   res.json(post)
 })
 const restoreDocument = asyncWrap(async (req, res) => {
@@ -52,4 +57,10 @@ const restoreDocument = asyncWrap(async (req, res) => {
   const post = await postRestore(req.params.id, createdBy)
   res.json(post)
 })
-export default { findDocuments, createDocument, patchDocument, deleteDocument, restoreDocument }
+export default {
+  findDocuments,
+  createDocument,
+  patchDocument,
+  deleteDocument,
+  restoreDocument,
+}

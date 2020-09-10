@@ -1,8 +1,13 @@
 import { postModel } from '../models/post'
 import { pick, omit } from 'lodash'
 import AplicationError from '../utils/aplicationError'
-const insert = async (data, createdBy) => {
-  const post = postModel.create({ ...data, createdBy: createdBy })
+
+const insert = async (data, createdBy, imgUrl) => {
+  const post = postModel.create({
+    ...data,
+    createdBy: createdBy,
+    imgUrl: imgUrl,
+  })
   return post
 }
 
