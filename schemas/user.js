@@ -20,7 +20,6 @@ const generateUserSchema = (mongoose) => {
   userSchema.plugin(mongoTimestamp)
   userSchema.plugin(uniqueValidator)
   userSchema.plugin(mongoosePaginate)
-  
   return userSchema
 }
 export { generateUserSchema }

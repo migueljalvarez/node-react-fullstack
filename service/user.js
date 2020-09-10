@@ -77,7 +77,9 @@ const find = async (
   }
 }
 const insert = async (data) => {
-  return new userModel({ ...data, password: md5(data.password) }).save()
+  const user = await userModel.create({ ...data, password: md5(data.password) })
+  
+  return user
 }
 const patch = async (id, fields = {}) => {
   const user = userModel.findOneAndUpdate({ _id: id }, omit(fields, ['_id']), {
