@@ -46,7 +46,6 @@ const findAll = async ({
         : 'countDocuments',
     },
   )
-  console.log(users);
   return users
 }
 const find = async (

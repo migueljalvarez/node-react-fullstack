@@ -28,3 +28,4 @@ const verifyToken = asyncWrap(async (req, res, next) => {
     }
   }
 })
+ export default {verifyToken}

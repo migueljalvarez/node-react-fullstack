@@ -14,7 +14,8 @@ const login = asyncWrap(async (req, res)=>{
   const secret = process.env.JWT_SECRET
   const payload = {
     id: req.user._id,
-    email: req.user.email
+    email: req.user.email,
+    username: req.user.username
   }
   const token = jwt.sign(payload, secret, {expiresIn: process.env.JWT_EXPIRATION_TIME})
   if (token) {

@@ -1,3 +1,3 @@
-import {generateUserSchema} from './user.js'
-
-export  {generateUserSchema}
+import { generateUserSchema } from './user.js'
+import { generatePostSchema } from './post.js'
+export { generateUserSchema, generatePostSchema }
