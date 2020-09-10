@@ -3,6 +3,19 @@ import { pick, omit } from 'lodash'
 import AplicationError from '../utils/aplicationError'
 import md5 from 'md5'
 
+const auth = async (email, password)=>{
+  const user = await userModel.findOne({email: email, password: md5(password)})
+  if (user) {
+    if(user.password === md5(password)){
+      return user
+    } else {
+      throw new AplicationError('Wrong email/password combination', 401)
+    }
+  }
+  if((await user) === null) {
+    throw new AplicationError('user not registered / not verified', 401)
+  }
+}
 
 const findAll = async ({
   withDeleted = false,
@@ -13,9 +26,11 @@ const findAll = async ({
   all = false,
   ...criteria
 } = {}) => {
-  return await userModel.paginate(
+  
+  const users = await userModel.paginate(
     { ...pick(criteria, userModel.getAllowedProperties()) },
     {
+      
       offset,
       limit: all ? 99999999 : limit,
       sort,
@@ -31,8 +46,9 @@ const findAll = async ({
         : 'countDocuments',
     },
   )
+  return users
 }
-const findById = async (
+const find = async (
   id,
   { withDeleted = false, onlyDeleted = false, ...criteria } = {},
 ) => {
@@ -60,7 +76,9 @@ const findById = async (
   }
 }
 const insert = async (data) => {
-  return new userModel({ ...data, password: md5(data.password) }).save()
+  const user = await userModel.create({ ...data, password: md5(data.password) })
+  
+  return user
 }
 const patch = async (id, fields = {}) => {
   const user = userModel.findOneAndUpdate({ _id: id }, omit(fields, ['_id']), {
@@ -73,7 +91,7 @@ const patch = async (id, fields = {}) => {
   }
 }
 const deleteOne = async (id, { hardDelete = false } = {}) => {
-  const document = await findById(id, { withDeleted: true })
+  const document = await find(id, { withDeleted: true })
   let response = null
   if (document) {
     if (hardDelete) {
@@ -88,7 +106,7 @@ const deleteOne = async (id, { hardDelete = false } = {}) => {
 }
 
 const restore = async (id) => {
-  const document = await findById(id, { onlyDeleted: true })
+  const document = await find(id, { onlyDeleted: true })
   let response = null
   if (document) {
     response = await document.restore()
@@ -98,4 +116,4 @@ const restore = async (id) => {
   return response
 }
 
-export { findById, findAll, insert, patch, deleteOne, restore }
+export { find, findAll, insert, patch, deleteOne, restore, auth }
