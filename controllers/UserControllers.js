@@ -1,7 +1,7 @@
 import asyncWrap from '../utils/asyncWrap.js'
 import {
   findAll as userFindAll,
-  findById as userFindById,
+  find as userFind,
   insert as userInsert,
   patch as userPatch,
   deleteOne as userDelete,
@@ -22,7 +22,7 @@ const findDocuments = asyncWrap(async (req, res) => {
     })
     res.json(users)
   } else {
-    const user = await userFindById(req.params.id, {
+    const user = await userFind(req.params.id, {
       ...req.query,
       withDeleted: req.query.withDeleted === 'true' ? true : false,
       onlyDeleted: req.query.onlyDeleted === 'true' ? true : false,
